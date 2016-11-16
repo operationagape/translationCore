@@ -21,7 +21,8 @@ module.exports = function(NAMESPACE) {
       super();
       var checkData = api.getDataFromCheckStore(NAMESPACE);
       this.state = {
-        checkObject: checkData
+        checkObject: checkData,
+        currentGroup: ""
       };
 
       this.currentGroupIndex = checkData.currentGroupIndex;
@@ -37,6 +38,7 @@ module.exports = function(NAMESPACE) {
       api.registerEventListener('goToCheck', this.goToCheck);
       api.registerEventListener('goToNext', this.goToNext);
       api.registerEventListener('goToPrevious', this.goToPrevious);
+      api.registerEventListener('groupChanged', this.changeGroup);
       this.setState({
         checkObject: api.getDataFromCheckStore(NAMESPACE)
       });
@@ -116,6 +118,7 @@ module.exports = function(NAMESPACE) {
             <div>{group.group}</div>
           );
           var checkMenuItems = group.checks.map(function(check, checkIndex) {
+            console.log(group);
             return (
               <div key={checkIndex}>
                 <MenuItem
@@ -138,7 +141,6 @@ module.exports = function(NAMESPACE) {
         <div className='fill-height'>
           <Well className='fill-height' style={{overflowY: 'scroll'}}>
             <div>
-              <h3>Checks</h3>
               {menuList}
             </div>
           </Well>
